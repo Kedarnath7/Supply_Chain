@@ -5,6 +5,7 @@ from src.supply_chain_optimization.logger import logging
 import pandas as pd
 from dotenv import load_dotenv
 import pymysql
+import pickle
 
 load_dotenv()
 
@@ -31,3 +32,16 @@ def read_sql_data():
         
     except Exception as ex:
         raise CustomException(ex,sys)
+
+def save_object(file_path, obj):
+
+    try:
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        
+        with open(file_path, 'wb') as file:
+            pickle.dump(obj, file)
+        
+        logging.info(f"Object saved successfully at: {file_path}")
+    
+    except Exception as e:
+        raise CustomException(f"Error occurred while saving object to {file_path}: {str(e)}", e)
